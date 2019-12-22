@@ -1,0 +1,42 @@
+{
+  "name": "prop-types-webpack-plugin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --mode development --open --hot",
+    "test": "eslint ./src/**/*.{js,jsx}",
+    "fix": "eslint ./src/**/*.{js,jsx} --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kirillgenets/prop-types-webpack-plugin.git"
+  },
+  "author": "Kiryl Henets",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kirillgenets/prop-types-webpack-plugin/issues"
+  },
+  "homepage": "https://github.com/kirillgenets/prop-types-webpack-plugin#readme",
+  "dependencies": {
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "@babel/preset-react": "^7.7.4",
+    "babel-eslint": "^10.0.3",
+    "babel-loader": "^8.0.6",
+    "eslint": "^6.7.2",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-react": "^1.1.7",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-react": "^7.17.0",
+    "html-webpack-plugin": "^3.2.0",
+    "prop-types": "^15.7.2",
+    "webpack": "^4.41.4",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1"
+  }
+}
