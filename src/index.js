@@ -8,5 +8,5 @@ ReactDOM.render(
     b={2}
     c={true}
   />,
-  document.querySelector('#root')
+  document.querySelector('#root'),
 );

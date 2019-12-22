@@ -27,8 +27,8 @@ module.exports = {
       template: './src/index.html'
     }),
     new PropTypesPlugin({
-      source: './src/components/App.jsx',
-      receiver: './src/components/AppContainer.jsx'
+      source: './src/components/AppContainer.jsx',
+      receiver: './src/components/App.jsx'
     })
   ]
 };
