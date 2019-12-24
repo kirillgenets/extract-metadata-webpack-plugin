@@ -29,7 +29,7 @@ module.exports = {
     new PropTypesPlugin({
       source: './src',
       type: '.jsx',
-      receiver: './dist/metadata.json'
+      receiver: './dist/meta/metadata.json'
     })
   ]
 };
