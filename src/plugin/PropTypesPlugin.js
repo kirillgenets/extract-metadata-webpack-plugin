@@ -6,15 +6,16 @@ const appendCommaToString = (string) => (string[string.length - 1] === ',' ? str
 
 class PropTypesPlugin {
   constructor(config) {
-    this._source = config.source;
+    this._source = [...config.source];
     this._receiver = config.receiver;
 
     this._propTypesString = 'propTypes = {';
   }
 
   _isConfigValid() {
-    if (!fs.existsSync(this._source)) {
-      console.error(`The path ${this._source} does not exist.`);
+    const areSourcesValid = this._source.every((source) => fs.existsSync(source));
+    if (!areSourcesValid) {
+      console.error(`The paths or path do not exist.`);
       return;
     }
 
@@ -27,16 +28,21 @@ class PropTypesPlugin {
   }
 
   _getPropTypes(receiver) {
-    const source = fs.readFileSync(this._source);
+    const propTypes = this._source.reduce((acc, path) => {
+      const source = fs.readFileSync(path).toString();
+      const currentPropTypes = source.slice(
+        getStringEndIndex(source, this._propTypesString),
+        source.lastIndexOf('}') - 1,
+      ).trimRight();
 
-    const propTypes = source.slice(
-      getStringEndIndex(source, this._propTypesString),
-      source.lastIndexOf('}') - 1,
-    ).toString().trimRight();
+      return acc += currentPropTypes;
+    }, '');
+
+    console.log(propTypes)
 
     return propTypes.split(',')
       .filter((item) => !receiver.includes(item))
-      .map((item) => { console.log(appendCommaToString(item)); return appendCommaToString(item)})
+      .map((item) => appendCommaToString(item))
       .join('');
   }
 
@@ -59,8 +65,10 @@ class PropTypesPlugin {
   _copyPropTypes() {
     if (!this._isConfigValid()) return;
 
-    const receiverWithPropTypes = this._getReceiverWithPropTypes();
-    fs.writeFileSync(this._receiver, receiverWithPropTypes);
+    console.log(fr.readirSync(this._source));
+
+    // const receiverWithPropTypes = this._getReceiverWithPropTypes();
+    // fs.writeFileSync(this._receiver, receiverWithPropTypes);
   }
 
   apply(compiler) {
