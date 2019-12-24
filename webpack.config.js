@@ -27,8 +27,9 @@ module.exports = {
       template: './src/index.html'
     }),
     new PropTypesPlugin({
-      source: './src/components/AppContainer.jsx',
-      receiver: './src/components/App.jsx'
+      source: './src',
+      type: '.jsx',
+      receiver: './dist/metadata.json'
     })
   ]
 };

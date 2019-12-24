@@ -8,11 +8,8 @@ const App = (props) => (
 );
 
 App.propTypes = {
-  m: PropTypes.string.isRequired,
-  k: PropTypes.object,
   a: PropTypes.string.isRequired,
-  b: PropTypes.number,
-  c: PropTypes.bool,
+  id: PropTypes.string,
 };
 
 export default App;

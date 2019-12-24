@@ -10,7 +10,7 @@ const AppContainer = (props) => (
 AppContainer.propTypes = {
   k: PropTypes.object,
   m: PropTypes.string.isRequired,
-  a: PropTypes.string.isRequired
+  a: PropTypes.string.isRequired,
 };
 
 export default AppContainer;
