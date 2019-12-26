@@ -2,8 +2,17 @@ const fs = require('fs');
 const path = require('path');
 
 const RED_CONSOLE_COLOR = '\x1b[31m';
+const COMPLICATED_PROP_TYPES = [
+  'shape',
+  'oneOf',
+  'arrayOf',
+  'objectOf',
+  'instanceOf',
+  'oneOfType',
+  'exact',
+];
+
 const getStringEndIndex = (source, str) => source.indexOf(str) + str.length;
-const appendCommaToString = (string) => (string[string.length - 1] === ',' ? string : `${string},`);
 
 class PropTypesPlugin {
   constructor(config) {
@@ -14,17 +23,24 @@ class PropTypesPlugin {
     this.propTypesString = 'propTypes = {';
   }
 
-  getPropTypes(file) {
-    const source = fs.readFileSync(file).toString();
-    return source.slice(
-        getStringEndIndex(source, this.propTypesString),
-        source.lastIndexOf('}') - 1,
-      )
+  getPropTypes = (source, start) => (
+    source.slice(
+      getStringEndIndex(source, start),
+      source.lastIndexOf('}') - 1,
+    )
       .split(',')
-      .map((propType) => propType.trim());
-  }
+      .map((propType) => propType.trim())
+  )
 
-  getPropTypesObject = (propTypesArr) => {
+  getPropTypeObject = (value) => ({
+    type: {
+      name: value[1].includes('(') ? value[1].slice(0, value[1].indexOf('(')) : value[1],
+    },
+    required: value[2] === 'isRequired',
+    description: '',
+  })
+
+  getAllPropTypesObject = (propTypesArr) => {
     const object = {};
 
     propTypesArr.forEach((propType) => {
@@ -34,13 +50,7 @@ class PropTypesPlugin {
       const key = pair[0];
       const value = pair[1].split('.');
 
-      object[key] = {
-        type: {
-          name: value[1]
-        },
-        required: value[2] === 'isRequired',
-        description: ''
-      }
+      object[key] = this.getPropTypeObject(value);
     });
 
     return object;
@@ -67,15 +77,16 @@ class PropTypesPlugin {
 
   createAllMetaDataObject(files) {
     const meta = {};
-    
+
     files.forEach((file) => {
-      const propTypes = this.getPropTypes(file);
+      const source = fs.readFileSync(file).toString();
+      const propTypes = this.getPropTypes(source, this.propTypesString);
 
       meta[file] = {
         description: '',
         displayName: file.slice(file.lastIndexOf('/') + 1, file.indexOf(this.type)),
-        props: this.getPropTypesObject(propTypes)
-      }
+        props: this.getAllPropTypesObject(propTypes),
+      };
     });
 
     return meta;
@@ -90,16 +101,16 @@ class PropTypesPlugin {
 
     folderPaths.forEach((folder) => {
       if (!fs.existsSync(folder)) {
-        fs.mkdirSync(folder)
+        fs.mkdirSync(folder);
       }
     });
-    
+
     fs.writeFileSync(this.receiver, JSON.stringify(meta));
   }
 
   createMetaData() {
     try {
-      const files = this.getFilesWithType();     
+      const files = this.getFilesWithType();
       const meta = this.createAllMetaDataObject(files);
 
       this.saveMeta(meta);
