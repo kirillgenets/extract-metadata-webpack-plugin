@@ -27,7 +27,7 @@ module.exports = {
       template: './src/index.html'
     }),
     new PropTypesPlugin({
-      source: './src',
+      source: 'src',
       type: '.jsx',
       receiver: './dist/meta/metadata.json'
     })

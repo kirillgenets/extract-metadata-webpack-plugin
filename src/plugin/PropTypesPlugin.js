@@ -1,59 +1,14 @@
 const fs = require('fs');
 const path = require('path');
+const reactDocs = require('react-docgen');
 
 const RED_CONSOLE_COLOR = '\x1b[31m';
-const COMPLICATED_PROP_TYPES = [
-  'shape',
-  'oneOf',
-  'arrayOf',
-  'objectOf',
-  'instanceOf',
-  'oneOfType',
-  'exact',
-];
-
-const getStringEndIndex = (source, str) => source.indexOf(str) + str.length;
 
 class PropTypesPlugin {
   constructor(config) {
     this.source = config.source;
     this.type = config.type;
     this.receiver = config.receiver;
-
-    this.propTypesString = 'propTypes = {';
-  }
-
-  getPropTypes = (source, start) => (
-    source.slice(
-      getStringEndIndex(source, start),
-      source.lastIndexOf('}') - 1,
-    )
-      .split(',')
-      .map((propType) => propType.trim())
-  )
-
-  getPropTypeObject = (value) => ({
-    type: {
-      name: value[1].includes('(') ? value[1].slice(0, value[1].indexOf('(')) : value[1],
-    },
-    required: value[2] === 'isRequired',
-    description: '',
-  })
-
-  getAllPropTypesObject = (propTypesArr) => {
-    const object = {};
-
-    propTypesArr.forEach((propType) => {
-      if (!propType) return;
-
-      const pair = propType.split(': ');
-      const key = pair[0];
-      const value = pair[1].split('.');
-
-      object[key] = this.getPropTypeObject(value);
-    });
-
-    return object;
   }
 
   isFileMatches = (file) => path.extname(file) === this.type;
@@ -75,18 +30,14 @@ class PropTypesPlugin {
       .filter((file) => this.isFileMatches(file))
   );
 
-  createAllMetaDataObject(files) {
+  createMetaDataJSON = (files) => {
     const meta = {};
 
     files.forEach((file) => {
       const source = fs.readFileSync(file).toString();
-      const propTypes = this.getPropTypes(source, this.propTypesString);
+      const docs = reactDocs.parse(source);
 
-      meta[file] = {
-        description: '',
-        displayName: file.slice(file.lastIndexOf('/') + 1, file.indexOf(this.type)),
-        props: this.getAllPropTypesObject(propTypes),
-      };
+      meta[file] = docs;
     });
 
     return meta;
@@ -105,13 +56,13 @@ class PropTypesPlugin {
       }
     });
 
-    fs.writeFileSync(this.receiver, JSON.stringify(meta));
+    fs.writeFileSync(this.receiver, JSON.stringify(meta, null, 2));
   }
 
   createMetaData() {
     try {
       const files = this.getFilesWithType();
-      const meta = this.createAllMetaDataObject(files);
+      const meta = this.createMetaDataJSON(files);
 
       this.saveMeta(meta);
     } catch (error) {
