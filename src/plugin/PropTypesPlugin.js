@@ -6,20 +6,19 @@ const RED_CONSOLE_COLOR = '\x1b[31m';
 
 class PropTypesPlugin {
   constructor(config) {
-    this.source = config.source;
-    this.type = config.type;
+    this.source = /.\*\../.test(config.source) ? config.source.slit('/')[0] : config.source;
     this.receiver = config.receiver;
   }
 
   isFileMatches = (file) => path.extname(file) === this.type;
 
-  inspectTreeForFiles = (item) => {
-    const content = fs.readdirSync(item);
+  inspectTreeForFiles = (folder) => {
+    const content = fs.readdirSync(folder);
 
     return content.map((node) => {
-      if (fs.lstatSync(`${item}/${node}`).isFile()) return `${item}/${node}`;
+      if (fs.lstatSync(`${folder}/${node}`).isFile()) return `${folder}/${node}`;
 
-      return this.inspectTreeForFiles(`${item}/${node}`);
+      return this.inspectTreeForFiles(`${folder}/${node}`);
     });
   }
 
