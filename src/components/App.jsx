@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import DataTable from '../../DataTable';
 
 const App = (props) => (
     <div>
@@ -8,9 +9,7 @@ const App = (props) => (
 );
 
 App.propTypes = {
-  m: PropTypes.string.isRequired,
-  k: PropTypes.object,
-  a: PropTypes.string.isRequired,
+  ...DataTable.propTypes,
   b: PropTypes.number,
   c: PropTypes.bool,
 };
