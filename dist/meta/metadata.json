@@ -3,43 +3,9 @@
     "description": "",
     "displayName": "App",
     "methods": [],
-    "props": {
-      "m": {
-        "type": {
-          "name": "string"
-        },
-        "required": true,
-        "description": ""
-      },
-      "k": {
-        "type": {
-          "name": "object"
-        },
-        "required": false,
-        "description": ""
-      },
-      "a": {
-        "type": {
-          "name": "string"
-        },
-        "required": true,
-        "description": ""
-      },
-      "b": {
-        "type": {
-          "name": "number"
-        },
-        "required": false,
-        "description": ""
-      },
-      "c": {
-        "type": {
-          "name": "bool"
-        },
-        "required": false,
-        "description": ""
-      }
-    }
+    "composes": [
+      "./DataTable"
+    ]
   },
   "src/components/AppContainer/AppContainer.jsx": {
     "description": "",

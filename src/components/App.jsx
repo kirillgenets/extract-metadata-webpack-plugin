@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import DataTable from './DataTable';
 
 const App = (props) => (
     <div>
@@ -7,12 +7,6 @@ const App = (props) => (
     </div>
 );
 
-App.propTypes = {
-  m: PropTypes.string.isRequired,
-  k: PropTypes.object,
-  a: PropTypes.string.isRequired,
-  b: PropTypes.number,
-  c: PropTypes.bool,
-};
+App.propTypes = DataTable.propTypes;
 
 export default App;

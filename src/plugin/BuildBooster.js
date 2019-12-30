@@ -4,33 +4,31 @@ const reactDocs = require('react-docgen');
 
 const RED_CONSOLE_COLOR = '\x1b[31m';
 
-class PropTypesPlugin {
+class BuildBooster {
   constructor(config) {
-    this.source = config.source;
-    this.type = config.type;
+    this.isRegular = /.\*\../.test(config.source);
+    this.source = this.isRegular
+      ? config.source.slice(0, config.source.indexOf('/*'))
+      : config.source;
+    this.type = config.source.slice(config.source.lastIndexOf('.'), config.source.length);
     this.receiver = config.receiver;
   }
 
   isFileMatches = (file) => path.extname(file) === this.type;
 
-  inspectTreeForFiles = (item) => {
-    const content = fs.readdirSync(item);
+  getFilesWithType = () => this.searchFiles(this.source).join().split(',').filter((file) => this.isFileMatches(file));
+
+  searchFiles = (folder) => {
+    const content = fs.readdirSync(folder);
 
     return content.map((node) => {
-      if (fs.lstatSync(`${item}/${node}`).isFile()) return `${item}/${node}`;
+      if (fs.lstatSync(`${folder}/${node}`).isFile()) return `${folder}/${node}`;
 
-      return this.inspectTreeForFiles(`${item}/${node}`);
+      return this.searchFiles(`${folder}/${node}`);
     });
   }
 
-  getFilesWithType = () => (
-    this.inspectTreeForFiles(this.source)
-      .join()
-      .split(',')
-      .filter((file) => this.isFileMatches(file))
-  );
-
-  createMetaDataJSON = (files) => {
+  createJSON = (files) => {
     const meta = {};
 
     files.forEach((file) => {
@@ -61,8 +59,8 @@ class PropTypesPlugin {
 
   createMetaData() {
     try {
-      const files = this.getFilesWithType();
-      const meta = this.createMetaDataJSON(files);
+      const files = this.isRegular ? this.getFilesWithType() : [this.source];
+      const meta = this.createJSON(files);
 
       this.saveMeta(meta);
     } catch (error) {
@@ -71,10 +69,10 @@ class PropTypesPlugin {
   }
 
   apply(compiler) {
-    compiler.hooks.afterEnvironment.tap('PropTypes Plugin', () => {
+    compiler.hooks.afterEnvironment.tap('BuildBooster Plugin', () => {
       this.createMetaData();
     });
   }
 }
 
-module.exports = PropTypesPlugin;
+module.exports = BuildBooster;
