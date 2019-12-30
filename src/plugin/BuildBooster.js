@@ -16,24 +16,19 @@ class BuildBooster {
 
   isFileMatches = (file) => path.extname(file) === this.type;
 
-  inspectTreeForFiles = (folder) => {
+  getFilesWithType = () => this.searchFiles(this.source).join().split(',').filter((file) => this.isFileMatches(file));
+
+  searchFiles = (folder) => {
     const content = fs.readdirSync(folder);
 
     return content.map((node) => {
       if (fs.lstatSync(`${folder}/${node}`).isFile()) return `${folder}/${node}`;
 
-      return this.inspectTreeForFiles(`${folder}/${node}`);
+      return this.searchFiles(`${folder}/${node}`);
     });
   }
 
-  getFilesWithType = () => (
-    this.inspectTreeForFiles(this.source)
-      .join()
-      .split(',')
-      .filter((file) => this.isFileMatches(file))
-  );
-
-  createMetaDataJSON = (files) => {
+  createJSON = (files) => {
     const meta = {};
 
     files.forEach((file) => {
@@ -65,7 +60,7 @@ class BuildBooster {
   createMetaData() {
     try {
       const files = this.isRegular ? this.getFilesWithType() : [this.source];
-      const meta = this.createMetaDataJSON(files);
+      const meta = this.createJSON(files);
 
       this.saveMeta(meta);
     } catch (error) {
