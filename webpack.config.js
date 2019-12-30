@@ -1,6 +1,6 @@
 const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
-const PropTypesPlugin = require('./src/plugin/PropTypesPlugin');
+const BuildBooster = require('./src/plugin/BuildBooster');
 
 module.exports = {
   entry: './src/index.js',
@@ -26,7 +26,7 @@ module.exports = {
     new HTMLWebpackPlugin({
       template: './src/index.html'
     }),
-    new PropTypesPlugin({
+    new BuildBooster({
       source: 'src/**/*.jsx',
       receiver: 'dist/meta/metadata.json'
     })

@@ -4,9 +4,13 @@ const reactDocs = require('react-docgen');
 
 const RED_CONSOLE_COLOR = '\x1b[31m';
 
-class PropTypesPlugin {
+class BuildBooster {
   constructor(config) {
-    this.source = /.\*\../.test(config.source) ? config.source.slit('/')[0] : config.source;
+    this.isRegular = /.\*\../.test(config.source);
+    this.source = this.isRegular
+      ? config.source.slice(0, config.source.indexOf('/*'))
+      : config.source;
+    this.type = config.source.slice(config.source.lastIndexOf('.'), config.source.length);
     this.receiver = config.receiver;
   }
 
@@ -60,7 +64,7 @@ class PropTypesPlugin {
 
   createMetaData() {
     try {
-      const files = this.getFilesWithType();
+      const files = this.isRegular ? this.getFilesWithType() : [this.source];
       const meta = this.createMetaDataJSON(files);
 
       this.saveMeta(meta);
@@ -70,10 +74,10 @@ class PropTypesPlugin {
   }
 
   apply(compiler) {
-    compiler.hooks.afterEnvironment.tap('PropTypes Plugin', () => {
+    compiler.hooks.afterEnvironment.tap('BuildBooster Plugin', () => {
       this.createMetaData();
     });
   }
 }
 
-module.exports = PropTypesPlugin;
+module.exports = BuildBooster;
