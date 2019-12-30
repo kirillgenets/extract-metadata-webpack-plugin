@@ -49,9 +49,7 @@ class BuildBooster {
     });
 
     folderPaths.forEach((folder) => {
-      if (!fs.existsSync(folder)) {
-        fs.mkdirSync(folder);
-      }
+      if (!fs.existsSync(folder)) fs.mkdirSync(folder);
     });
 
     fs.writeFileSync(this.receiver, JSON.stringify(meta, null, 2));
