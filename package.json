@@ -1,5 +1,5 @@
 {
-  "name": "prop-types-webpack-plugin",
+  "name": "build-booster-plugin",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kirillgenets/prop-types-webpack-plugin.git"
+    "url": "git+https://github.com/kirillgenets/build-booster-plugin.git"
   },
   "author": "Kiryl Henets",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/kirillgenets/prop-types-webpack-plugin/issues"
+    "url": "https://github.com/kirillgenets/build-booster-plugin/issues"
   },
-  "homepage": "https://github.com/kirillgenets/prop-types-webpack-plugin#readme",
+  "homepage": "https://github.com/kirillgenets/build-booster-plugin#readme",
   "dependencies": {
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
