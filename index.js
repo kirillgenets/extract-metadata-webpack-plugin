@@ -14,11 +14,15 @@ class BuildBooster {
     this.receiver = config.receiver;
   }
 
-  isFileMatches = (file) => path.extname(file) === this.type;
+  isFileMatches(file) {
+    return path.extname(file) === this.type;
+  }
 
-  getFilesWithType = () => this.searchFiles(this.source).join().split(',').filter((file) => this.isFileMatches(file));
+  getFilesWithType() {
+    return this.searchFiles(this.source).join().split(',').filter((file) => this.isFileMatches(file));
+  }
 
-  searchFiles = (folder) => {
+  searchFiles(folder) {
     const content = fs.readdirSync(folder);
 
     return content.map((node) => {
@@ -28,7 +32,7 @@ class BuildBooster {
     });
   }
 
-  createJSON = (files) => {
+  createJSON(files) {
     const meta = {};
 
     files.forEach((file) => {
