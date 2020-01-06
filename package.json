@@ -1,5 +1,5 @@
 {
-  "name": "build-booster",
+  "name": "extract-metadata-webpack-plugin",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kirillgenets/build-booster.git"
+    "url": "git+https://github.com/kirillgenets/extract-metadata-webpack-plugin.git"
   },
   "author": "Kiryl Henets",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/kirillgenets/build-booster/issues"
+    "url": "https://github.com/kirillgenets/extract-metadata-webpack-plugin/issues"
   },
-  "homepage": "https://github.com/kirillgenets/build-booster#readme",
+  "homepage": "https://github.com/kirillgenets/extract-metadata-webpack-plugin#readme",
   "dependencies": {
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
