@@ -20,7 +20,8 @@
   "homepage": "https://github.com/kirillgenets/extract-metadata-webpack-plugin#readme",
   "dependencies": {
     "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "react-dom": "^16.12.0",
+    "react-docgen": "^5.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
@@ -38,8 +39,5 @@
     "webpack": "^4.41.4",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1"
-  },
-  "peerDependencies": {
-    "react-docgen": "^5.0.0"
   }
 }
