@@ -14,7 +14,7 @@ yarn add extract-metadata-webpack-plugin --dev
 ```
 
 ## How to use
-Just import the plugin from node_modules and write the config like that:
+Just import the plugin from node_modules and add plugin to the webpack config like that:
 ```
 const ExtractMetadataPlugin = require('extract-metadata-webpack-plugin');
 ...
