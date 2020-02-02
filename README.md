@@ -19,10 +19,13 @@ Just import the plugin from node_modules and write the config like that:
 const ExtractMetadataPlugin = require('extract-metadata-webpack-plugin');
 ...
 ...
-plugins: [
-  new ExtractMetadataPlugin({
-    source: 'src/**/*.jsx',
-    receiver: 'lib/metadata.json'
-  })
-]
+module.exports = {
+  ...
+  plugins: [
+    new ExtractMetadataPlugin({
+      source: 'src/**/*.jsx',
+      receiver: 'lib/metadata.json'
+    })
+  ],
+}
 ```
